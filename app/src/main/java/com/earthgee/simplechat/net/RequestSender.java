@@ -25,8 +25,13 @@ public class RequestSender {
     }
 
     private int sendLoginRequestReal(String userName,String passWord,ISendListener sendListener){
-        //todo
+        byte[] b=ProtocolFactory.createLoginProtocol(userName,passWord).toBytes();
+        int code=send(b,b.length);
         return -1;
+    }
+
+    private int send(byte[] fullProtocolBytes,int dataLen){
+        
     }
 
     private final class LoginTask extends AsyncTask<Object,Integer,Integer>{

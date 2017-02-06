@@ -6,6 +6,16 @@ package com.earthgee.simplechat.net;
 public enum ProtocolType {
 
     //发送
-    REQUEST_LOGIN
+    REQUEST_LOGIN(0);
+
+    private int index;
+
+    ProtocolType(int index){
+        this.index=index;
+    }
+
+    int getIndex(){
+         return index;
+    }
 
 }
