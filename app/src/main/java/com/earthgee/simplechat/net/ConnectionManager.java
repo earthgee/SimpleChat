@@ -2,6 +2,7 @@ package com.earthgee.simplechat.net;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 
 /**
  * Created by earthgee on 17/2/5.
@@ -11,6 +12,7 @@ public class ConnectionManager {
 
     private Context context;
     private ClientCore clientCore;
+    private LocalUDPProvider localUDPProvider;
 
     private static ConnectionManager instance;
 
@@ -25,9 +27,20 @@ public class ConnectionManager {
         return instance;
     }
 
-    public void init(){
-        clientCore=new ClientCore();
-
+    public static ConnectionManager getInstance(){
+        return instance;
     }
 
+    public void init(){
+        clientCore=new ClientCore();
+        localUDPProvider=new LocalUDPProvider();
+    }
+
+    public boolean isNetAvaiable(){
+        return clientCore.ismLocalNetAvaiable();
+    }
+
+    public LocalUDPProvider getLocalUDPProvider() {
+        return localUDPProvider;
+    }
 }

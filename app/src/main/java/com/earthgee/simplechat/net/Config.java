@@ -11,7 +11,7 @@ public class Config {
     public static String serverIP;
     public static String serverDomain;
     public static int serverUdpPort;
-
+    public static int localUdpPort;
 
 
 }

@@ -8,11 +8,11 @@ import android.net.ConnectivityManager;
 
 /**
  * Created by earthgee on 17/2/5.
- * 长连接核心启动
  */
 public class ClientCore {
 
     private Context context;
+    private boolean mLocalNetAvaiable;
 
     public void init(Context context){
         this.context=context;
@@ -26,8 +26,19 @@ public class ClientCore {
     private final BroadcastReceiver networkListenReceiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            ConnectivityManager connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivityManager.getActiveNetworkInfo()!=null
+                    &&connectivityManager.getActiveNetworkInfo().isAvailable()){
+                //目前网络连接
+                mLocalNetAvaiable=true;
+            }else{
+                //目前网络断开
+                mLocalNetAvaiable=false;
+            }
         }
     };
 
+    public boolean ismLocalNetAvaiable() {
+        return mLocalNetAvaiable;
+    }
 }

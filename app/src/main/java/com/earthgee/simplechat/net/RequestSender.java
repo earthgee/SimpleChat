@@ -1,6 +1,12 @@
 package com.earthgee.simplechat.net;
 
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+
+import com.earthgee.simplechat.util.ErrorCode;
+
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 
 /**
  * Created by earthgee on 17/2/5.
@@ -31,7 +37,21 @@ public class RequestSender {
     }
 
     private int send(byte[] fullProtocolBytes,int dataLen){
-        
+        if(!ConnectionManager.getInstance().isNetAvaiable()){
+            return ErrorCode.LOCAL_NET_NO_CONNECTED;
+        }
+
+        DatagramSocket ds=ConnectionManager.getInstance().
+                getLocalUDPProvider().getLocalUDPSocket();
+        if(ds!=null&&!ds.isConnected()){
+            try{
+                ds.connect(InetAddress.getByName(Config.serverIP),Config.serverUdpPort);
+            }catch (Exception e){
+                return ErrorCode.BAD_CONNECT_TO_SERVER;
+            }
+        }
+
+        return
     }
 
     private final class LoginTask extends AsyncTask<Object,Integer,Integer>{

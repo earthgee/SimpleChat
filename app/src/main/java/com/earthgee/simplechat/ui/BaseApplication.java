@@ -13,6 +13,6 @@ public class BaseApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        ConnectionManager.getInstance().init();
+        ConnectionManager.getInstance(getApplicationContext()).init();
     }
 }
