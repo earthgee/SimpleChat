@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import com.earthgee.simplechat.util.ErrorCode;
 
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
@@ -33,7 +34,7 @@ public class RequestSender {
     private int sendLoginRequestReal(String userName,String passWord,ISendListener sendListener){
         byte[] b=ProtocolFactory.createLoginProtocol(userName,passWord).toBytes();
         int code=send(b,b.length);
-        return -1;
+        return code;
     }
 
     private int send(byte[] fullProtocolBytes,int dataLen){
@@ -51,7 +52,15 @@ public class RequestSender {
             }
         }
 
-        return
+        boolean sendSuccess=true;
+        try{
+            DatagramPacket packet=new DatagramPacket(fullProtocolBytes,dataLen);
+            ds.send(packet);
+        }catch (Exception e){
+            sendSuccess=false;
+        }
+
+        return sendSuccess?ErrorCode.COMMON_CODE_OK:ErrorCode.SEND_PACKET_FAIL;
     }
 
     private final class LoginTask extends AsyncTask<Object,Integer,Integer>{
@@ -69,11 +78,17 @@ public class RequestSender {
         @Override
         protected Integer doInBackground(Object... params) {
             int code=sendLoginRequestReal(userName,password,sendListener);
-            return null;
+            return Integer.valueOf(code);
         }
 
+        @Override
+        protected void onPostExecute(Integer integer) {
+            if(integer==0){
 
+            }else{
 
+            }
+        }
     }
 
 }

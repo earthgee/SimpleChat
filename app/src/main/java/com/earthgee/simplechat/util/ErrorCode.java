@@ -9,5 +9,6 @@ public class ErrorCode {
 
     public static final int LOCAL_NET_NO_CONNECTED=201;
     public static final int BAD_CONNECT_TO_SERVER=202;
+    public static final int SEND_PACKET_FAIL=203;
 
 }
