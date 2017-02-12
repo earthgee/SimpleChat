@@ -22,4 +22,12 @@ public class CharsetUtil {
         }
     }
 
+    public static String getString(byte[] b,int len){
+        try{
+            return new String(b,0,len,DECODE_CHARSET);
+        }catch (UnsupportedEncodingException e){
+            return new String(b,0,len);
+        }
+    }
+
 }

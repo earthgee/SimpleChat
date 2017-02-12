@@ -29,5 +29,11 @@ public class Protocol {
         return CharsetUtil.getBytes(toGsonString());
     }
 
+    public ProtocolType getType() {
+        return type;
+    }
 
+    public String getContent() {
+        return content;
+    }
 }

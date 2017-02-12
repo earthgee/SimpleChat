@@ -1,6 +1,8 @@
 package com.earthgee.simplechat.net;
 
 import com.earthgee.simplechat.net.entity.LoginInfo;
+import com.earthgee.simplechat.net.entity.LoginResponse;
+import com.earthgee.simplechat.util.CharsetUtil;
 import com.google.gson.Gson;
 
 /**
@@ -8,6 +10,23 @@ import com.google.gson.Gson;
  * 封装解析传输数据
  */
 public class ProtocolFactory {
+
+    public static Protocol parse(byte[] fullProtocolBytes,int len){
+        return parse(fullProtocolBytes,len,Protocol.class);
+    }
+
+    public static Protocol parse(byte[] fullProtocolBytes,int len,Class<Protocol> protocolClass){
+        return new Gson().fromJson(CharsetUtil.getString(fullProtocolBytes, len), protocolClass);
+    }
+
+    public static <T> T parse(String ProtocolString,Class<T> protocolClass){
+        return new Gson().fromJson(ProtocolString,protocolClass);
+    }
+
+    public static LoginResponse parseLoginResponse(String content){
+        return parse(content,LoginResponse.class);
+    }
+
 
     public static Protocol createLoginProtocol(String username,String password){
         return new Protocol(ProtocolType.REQUEST_LOGIN,create(new LoginInfo(username,password)),-1,0);

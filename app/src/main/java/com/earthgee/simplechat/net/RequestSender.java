@@ -86,7 +86,7 @@ public class RequestSender {
             if(integer==0){
 
             }else{
-
+                //发送失败
             }
         }
     }

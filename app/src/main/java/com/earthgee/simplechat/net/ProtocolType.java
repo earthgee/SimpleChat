@@ -6,7 +6,9 @@ package com.earthgee.simplechat.net;
 public enum ProtocolType {
 
     //发送
-    REQUEST_LOGIN(0);
+    REQUEST_LOGIN(0),
+    //接收
+    RESPONSE_LOGIN(1);
 
     private int index;
 
