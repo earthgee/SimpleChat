@@ -1,5 +1,9 @@
 package com.earthgee.simplechat.net;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
@@ -17,12 +21,18 @@ public class LocalUDPReceiver {
     private static LocalUDPReceiver instance;
     private Thread thread=null;
 
+    private static MessageHandler messageHandler;
+
+    private static Context context;
+
     private LocalUDPReceiver(){
     }
 
-    public static LocalUDPReceiver getInstance(){
+    public static LocalUDPReceiver getInstance(Context contextReal){
         if(instance==null){
             instance=new LocalUDPReceiver();
+            messageHandler=new MessageHandler();
+            context=contextReal;
         }
         return instance;
     }
@@ -69,7 +79,7 @@ public class LocalUDPReceiver {
 
             Message msg=Message.obtain();
             msg.obj=packet;
-
+            messageHandler.sendMessage(msg);
         }
     }
 
@@ -91,12 +101,23 @@ public class LocalUDPReceiver {
 
                         if(loginResponse.getCode()==0){
                             //登录成功
+                            ConnectionManager.getInstance().getClientCore().
+                                    setCurrentUserId(loginResponse.getUserId());
+                            Intent intent=new Intent("com.earthgee.login");
+                            Bundle bundle=new Bundle();
+                            bundle.putInt("userId",loginResponse.getUserId());
+                            bundle.putInt("code",loginResponse.getCode());
+                            sendBroadCast(intent);
                         }else{
-                            
+
                         }
                 }
             }
         }
+    }
+
+    private static void sendBroadCast(Intent intent){
+        context.sendBroadcast(intent);
     }
 
 }

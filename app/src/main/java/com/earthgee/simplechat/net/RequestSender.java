@@ -1,5 +1,6 @@
 package com.earthgee.simplechat.net;
 
+import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 
@@ -27,11 +28,11 @@ public class RequestSender {
         return instance;
     }
 
-    public void sendLoginRequest(String userName,String password,ISendListener sendListener){
-        new LoginTask(userName, password, sendListener).execute();
+    public void sendLoginRequest(String userName,String password,Context context){
+        new LoginTask(userName, password, context).execute();
     }
 
-    private int sendLoginRequestReal(String userName,String passWord,ISendListener sendListener){
+    private int sendLoginRequestReal(String userName,String passWord){
         byte[] b=ProtocolFactory.createLoginProtocol(userName,passWord).toBytes();
         int code=send(b,b.length);
         return code;
@@ -67,24 +68,24 @@ public class RequestSender {
 
         private String userName;
         private String password;
-        private ISendListener sendListener;
+        private Context context;
 
-        public LoginTask(String userName,String password,ISendListener sendListener){
+        public LoginTask(String userName,String password,Context context){
             this.userName=userName;
             this.password=password;
-            this.sendListener=sendListener;
+            this.context=context;
         }
 
         @Override
         protected Integer doInBackground(Object... params) {
-            int code=sendLoginRequestReal(userName,password,sendListener);
+            int code=sendLoginRequestReal(userName,password);
             return Integer.valueOf(code);
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
             if(integer==0){
-
+                LocalUDPReceiver.getInstance(context).startUp();
             }else{
                 //发送失败
             }

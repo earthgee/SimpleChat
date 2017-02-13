@@ -14,6 +14,9 @@ public class ClientCore {
     private Context context;
     private boolean mLocalNetAvaiable;
 
+    private int mCurrentUserId;
+    private boolean isLogin;
+
     public void init(Context context){
         this.context=context;
 
@@ -40,5 +43,9 @@ public class ClientCore {
 
     public boolean ismLocalNetAvaiable() {
         return mLocalNetAvaiable;
+    }
+
+    public void setCurrentUserId(int mCurrentUserId) {
+        this.mCurrentUserId = mCurrentUserId;
     }
 }

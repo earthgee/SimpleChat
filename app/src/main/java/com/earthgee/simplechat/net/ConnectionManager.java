@@ -43,4 +43,8 @@ public class ConnectionManager {
     public LocalUDPProvider getLocalUDPProvider() {
         return localUDPProvider;
     }
+
+    public ClientCore getClientCore() {
+        return clientCore;
+    }
 }
