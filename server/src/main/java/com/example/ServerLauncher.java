@@ -3,9 +3,11 @@ package com.example;
 
 import org.apache.mina.core.session.ExpiringSessionRecycler;
 import org.apache.mina.filter.executor.ExecutorFilter;
+import org.apache.mina.transport.socket.DatagramSessionConfig;
 import org.apache.mina.transport.socket.nio.NioDatagramAcceptor;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -26,6 +28,8 @@ public abstract class ServerLauncher {
         this.serverCoreHandler=initServerCoreHandler();
         initListeners();
         acceptor=initAcceptor();
+        initSessionConfig(acceptor);
+        acceptor.bind(new InetSocketAddress(PORT));
     }
 
     protected ServerCoreHandler initServerCoreHandler(){
@@ -45,5 +49,11 @@ public abstract class ServerLauncher {
         return acceptor;
     }
 
+    protected void initSessionConfig(NioDatagramAcceptor acceptor){
+        DatagramSessionConfig dcfg=acceptor.getSessionConfig();
+        dcfg.setReuseAddress(true);
+        dcfg.setReceiveBufferSize(1024);
+        dcfg.setSendBufferSize(1024);
+    }
 
 }
