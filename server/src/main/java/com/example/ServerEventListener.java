@@ -7,7 +7,7 @@ import org.apache.mina.core.session.IoSession;
  */
 public interface ServerEventListener {
 
-    void onUserLoginCallback(int paramInt,String paramString,IoSession paramSession);
+    void onUserLoginCallback(int userId,String userName,IoSession paramSession);
 
 
 }

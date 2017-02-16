@@ -34,6 +34,11 @@ public class ProtocolFactory {
         return new Protocol(ProtocolType.REQUEST_LOGIN,create(new LoginInfo(username,password)),-1,0);
     }
 
+    public static Protocol createLoginResponse(int code,int userId){
+        return new Protocol(ProtocolType.RESPONSE_LOGIN,
+                create(new LoginResponse(code,userId)),0,userId);
+    }
+
     private static String create(Object c){
         return new Gson().toJson(c);
     }

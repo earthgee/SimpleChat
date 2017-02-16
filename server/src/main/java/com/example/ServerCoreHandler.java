@@ -3,6 +3,7 @@ package com.example;
 import com.example.protocal.CharsetUtil;
 import com.example.protocal.Protocol;
 import com.example.protocal.ProtocolFactory;
+import com.example.protocal.UserProcessor;
 import com.example.protocal.entity.LoginInfo;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -39,7 +40,35 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                     LoginInfo loginInfo=ProtocolFactory.parseLoginInfo(pFromClient.getContent());
 
                     if(this.serverEventListener!=null){
-                        int tryUserId=UserProcessor.getUserIdFromSession(session);
+                        int tryUserId= UserProcessor.getUserIdFromSession(session);
+
+                        boolean alreadyLogined=tryUserId!=-1;
+
+                        if(alreadyLogined){
+                            //已经登录过 这里重新登录一次
+                            boolean sendOk=sendData(session,
+                                    ProtocolFactory.createLoginResponse(0,tryUserId));
+                            if(sendOk){
+                                session.setAttribute
+                                        (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,tryUserId);
+                                session.setAttribute
+                                        (UserProcessor.LOGIN_NAME_IN_SESSION_ATTRIBUTE,loginInfo.getUsername());
+                                serverEventListener.onUserLoginCallback(tryUserId,loginInfo.getUsername(),session);
+                            }
+                        }else{
+                            int userId=getNextUserId(loginInfo);
+
+                            boolean sendOk=sendData(session,
+                                    ProtocolFactory.createLoginResponse(0, tryUserId));
+                            if(sendOk){
+                                session.setAttribute
+                                        (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,tryUserId);
+                                session.setAttribute
+                                        (UserProcessor.LOGIN_NAME_IN_SESSION_ATTRIBUTE,loginInfo.getUsername());
+                                serverEventListener.onUserLoginCallback(tryUserId,loginInfo.getUsername(),session);
+                            }
+                        }
+                        break;
                     }
             }
         }
@@ -57,6 +86,11 @@ public class ServerCoreHandler extends IoHandlerAdapter{
     public static String clientInfoToString(IoSession session){
         SocketAddress remoteAddress=session.getRemoteAddress();
         //// TODO: 17/2/15
+        return "";
+    }
+
+    protected int getNextUserId(LoginInfo loginInfo){
+        return UserProcessor.nextUserId(loginInfo);
     }
 
 }

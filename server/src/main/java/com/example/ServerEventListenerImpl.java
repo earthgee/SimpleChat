@@ -8,8 +8,7 @@ import org.apache.mina.core.session.IoSession;
 public class ServerEventListenerImpl implements ServerEventListener{
 
     @Override
-    public void onUserLoginCallback(int paramInt, String paramString, IoSession paramSession) {
-
+    public void onUserLoginCallback(int userId, String userName, IoSession paramSession) {
+        System.out.println("userId="+userId+",userName="+userName+" 登录");
     }
-
 }
