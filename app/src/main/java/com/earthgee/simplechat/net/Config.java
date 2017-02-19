@@ -8,10 +8,10 @@ public class Config {
 
     //todo
     public static String appKey;
-    public static String serverIP;
+    public static String serverIP="192.168.1.102";
     public static String serverDomain;
-    public static int serverUdpPort;
-    public static int localUdpPort;
+    public static int serverUdpPort=7901;
+    public static int localUdpPort=54321;
 
 
 }

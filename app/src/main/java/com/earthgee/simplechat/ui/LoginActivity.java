@@ -46,6 +46,21 @@ public class LoginActivity extends AppCompatActivity implements ISendListener{
                 login();
             }
         });
+        IntentFilter intentFilter=new IntentFilter("com.earthgee.login");
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                waitProgress.setVisibility(View.GONE);
+                int code = intent.getIntExtra("code", -1);
+                if (code == 0) {
+                    //startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    //finish();
+                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, intentFilter);
     }
 
     private void login(){
@@ -56,21 +71,7 @@ public class LoginActivity extends AppCompatActivity implements ISendListener{
         String userName=userNameLayout.getText().toString();
         String password=passwordLayout.getText().toString();
         waitProgress.setVisibility(View.VISIBLE);
-        RequestSender.getInstance().sendLoginRequest(userName,password,this);
-        IntentFilter intentFilter=new IntentFilter("com.earthgee.login");
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                waitProgress.setVisibility(View.GONE);
-                int code=intent.getIntExtra("code",-1);
-                if(code==0){
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    finish();
-                }else{
-                    Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
-                }
-            }
-        },intentFilter);
+        RequestSender.getInstance().sendLoginRequest(userName, password, this);
     }
 
     private boolean checkNetState(){

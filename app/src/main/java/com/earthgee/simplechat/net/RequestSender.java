@@ -3,6 +3,7 @@ package com.earthgee.simplechat.net;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.earthgee.simplechat.util.ErrorCode;
 
@@ -61,6 +62,7 @@ public class RequestSender {
             sendSuccess=false;
         }
 
+        Log.d("earthgee","send Login Packet");
         return sendSuccess?ErrorCode.COMMON_CODE_OK:ErrorCode.SEND_PACKET_FAIL;
     }
 

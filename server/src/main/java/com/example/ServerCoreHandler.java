@@ -7,6 +7,7 @@ import com.example.protocal.UserProcessor;
 import com.example.protocal.entity.LoginInfo;
 
 import org.apache.mina.core.buffer.IoBuffer;
+import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
@@ -59,10 +60,10 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                             int userId=getNextUserId(loginInfo);
 
                             boolean sendOk=sendData(session,
-                                    ProtocolFactory.createLoginResponse(0, tryUserId));
+                                    ProtocolFactory.createLoginResponse(0, userId));
                             if(sendOk){
                                 session.setAttribute
-                                        (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,tryUserId);
+                                        (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,userId);
                                 session.setAttribute
                                         (UserProcessor.LOGIN_NAME_IN_SESSION_ATTRIBUTE,loginInfo.getUsername());
                                 serverEventListener.onUserLoginCallback(tryUserId,loginInfo.getUsername(),session);
@@ -91,6 +92,25 @@ public class ServerCoreHandler extends IoHandlerAdapter{
 
     protected int getNextUserId(LoginInfo loginInfo){
         return UserProcessor.nextUserId(loginInfo);
+    }
+
+    static boolean sendData(IoSession session,Protocol p) throws Exception{
+        if(session.isConnected()){
+            if(p!=null){
+                byte[] res=p.toBytes();
+                IoBuffer buf=IoBuffer.wrap(res);
+                WriteFuture future=session.write(buf);
+                future.awaitUninterruptibly(100L);
+                if(future.isWritten()){
+                    if(p.getFrom()==0){
+                        return true;
+                    }
+                }
+            }
+        }else{
+
+        }
+        return false;
     }
 
 }

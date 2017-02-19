@@ -45,7 +45,7 @@ public abstract class ServerLauncher {
         acceptor.getFilterChain().addLast("threadPool",
                 new ExecutorFilter(Executors.newCachedThreadPool()));
         acceptor.setHandler(serverCoreHandler);
-        acceptor.setSessionRecycler(new ExpiringSessionRecycler(SESSION_RECYCLER_EXPIRE));
+        //acceptor.setSessionRecycler(new ExpiringSessionRecycler(SESSION_RECYCLER_EXPIRE));
         return acceptor;
     }
 

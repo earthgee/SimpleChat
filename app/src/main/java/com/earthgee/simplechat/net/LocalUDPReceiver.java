@@ -91,8 +91,6 @@ public class LocalUDPReceiver {
             if(packet==null) return;
 
             try{
-
-            }catch (Exception e){
                 Protocol pFromServer=ProtocolFactory.parse(packet.getData(),packet.getLength());
 
                 switch (pFromServer.getType()){
@@ -107,11 +105,14 @@ public class LocalUDPReceiver {
                             Bundle bundle=new Bundle();
                             bundle.putInt("userId",loginResponse.getUserId());
                             bundle.putInt("code",loginResponse.getCode());
+                            intent.putExtras(bundle);
                             sendBroadCast(intent);
                         }else{
 
                         }
                 }
+            }catch (Exception e){
+
             }
         }
     }

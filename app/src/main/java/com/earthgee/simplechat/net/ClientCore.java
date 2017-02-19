@@ -12,7 +12,7 @@ import android.net.ConnectivityManager;
 public class ClientCore {
 
     private Context context;
-    private boolean mLocalNetAvaiable;
+    private boolean mLocalNetAvaiable=true;
 
     private int mCurrentUserId;
     private boolean isLogin;

@@ -35,4 +35,8 @@ public class Protocol {
     public String getContent() {
         return content;
     }
+
+    public int getFrom() {
+        return from;
+    }
 }
