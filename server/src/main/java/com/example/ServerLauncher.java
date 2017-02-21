@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public abstract class ServerLauncher {
 
     public static int PORT=7901;
-    public static int SESSION_RECYCLER_EXPIRE=10;
+    public static int SESSION_RECYCLER_EXPIRE=1000*60;
 
     protected ServerCoreHandler serverCoreHandler;
     private NioDatagramAcceptor acceptor;
@@ -45,7 +45,7 @@ public abstract class ServerLauncher {
         acceptor.getFilterChain().addLast("threadPool",
                 new ExecutorFilter(Executors.newCachedThreadPool()));
         acceptor.setHandler(serverCoreHandler);
-        //acceptor.setSessionRecycler(new ExpiringSessionRecycler(SESSION_RECYCLER_EXPIRE));
+        acceptor.setSessionRecycler(new ExpiringSessionRecycler(SESSION_RECYCLER_EXPIRE));
         return acceptor;
     }
 
