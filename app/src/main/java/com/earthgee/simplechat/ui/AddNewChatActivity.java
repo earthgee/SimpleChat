@@ -30,14 +30,20 @@ public class AddNewChatActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 String userId=addUserId.getText().toString();
-                Intent intent=new Intent();
+                Intent intent=new Intent(AddNewChatActivity.this,ChatActivity.class);
                 intent.putExtra("userId",userId);
                 startActivity(intent);
+                finish();
             }
         });
 
         ActionBar actionBar=getSupportActionBar();
+        actionBar.setHomeButtonEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
