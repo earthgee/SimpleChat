@@ -48,4 +48,8 @@ public class ClientCore {
     public void setCurrentUserId(int mCurrentUserId) {
         this.mCurrentUserId = mCurrentUserId;
     }
+
+    public int getCurrentUserId() {
+        return mCurrentUserId;
+    }
 }

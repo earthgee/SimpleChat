@@ -39,4 +39,8 @@ public class Protocol {
     public int getFrom() {
         return from;
     }
+
+    public int getTo() {
+        return to;
+    }
 }

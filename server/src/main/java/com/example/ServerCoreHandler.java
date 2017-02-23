@@ -71,6 +71,14 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                         }
                         break;
                     }
+                    break;
+                case REQUEUST_CHAT_TEXT:
+                    if(pFromClient.getTo()==0){
+
+                    }else{
+                        boolean sendOk=sendData(pFromClient);
+                    }
+                    break;
             }
         }
     }
@@ -109,6 +117,13 @@ public class ServerCoreHandler extends IoHandlerAdapter{
             }
         }else{
 
+        }
+        return false;
+    }
+
+    static boolean sendData(Protocol p) throws Exception {
+        if(p!=null){
+            return sendData(UserProcessor.getInstance().getSession(p.getTo()),p);
         }
         return false;
     }

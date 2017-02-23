@@ -8,7 +8,10 @@ public enum ProtocolType {
     //发送
     REQUEST_LOGIN(0),
     //接收
-    RESPONSE_LOGIN(1);
+    RESPONSE_LOGIN(1),
+
+    //发送文字信息
+    REQUEUST_CHAT_TEXT(2);
 
     private int index;
 

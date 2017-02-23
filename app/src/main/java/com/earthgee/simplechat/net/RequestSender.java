@@ -39,6 +39,12 @@ public class RequestSender {
         return code;
     }
 
+    private int sendChatReqeuest(String toUserId,String content){
+        byte[] bytes=ProtocolFactory.createChatProtocol(content,
+                ConnectionManager.getInstance().getClientCore().getCurrentUserId(), toUserId).toBytes();
+        return send(bytes,bytes.length);
+    }
+
     private int send(byte[] fullProtocolBytes,int dataLen){
         if(!ConnectionManager.getInstance().isNetAvaiable()){
             return ErrorCode.LOCAL_NET_NO_CONNECTED;
@@ -92,6 +98,27 @@ public class RequestSender {
                 //发送失败
             }
         }
+    }
+
+    public static class SendTask extends AsyncTask<Object,Integer,Integer>{
+
+        private String userId;
+        private String content;
+        private Context context;
+
+        public SendTask(String userId,String content,Context context){
+            this.userId=userId;
+            this.content=content;
+            this.context=context;
+        }
+
+        @Override
+        protected Integer doInBackground(Object... params) {
+            int code=RequestSender.getInstance().
+                    sendChatReqeuest(userId, content);
+            return code;
+        }
+
     }
 
 }

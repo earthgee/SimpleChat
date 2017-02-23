@@ -24,12 +24,16 @@ public class ProtocolFactory {
     }
 
     public static LoginResponse parseLoginResponse(String content){
-        return parse(content,LoginResponse.class);
+        return parse(content, LoginResponse.class);
     }
-
 
     public static Protocol createLoginProtocol(String username,String password){
         return new Protocol(ProtocolType.REQUEST_LOGIN,create(new LoginInfo(username,password)),-1,0);
+    }
+
+    public static Protocol createChatProtocol(String content,int fromUserId,String toUserId){
+        return new Protocol(ProtocolType.REQUEUST_CHAT_TEXT,content,fromUserId,
+                Integer.parseInt(toUserId));
     }
 
     private static String create(Object c){

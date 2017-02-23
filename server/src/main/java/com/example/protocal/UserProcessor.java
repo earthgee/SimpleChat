@@ -31,6 +31,10 @@ public class UserProcessor {
         return -1;
     }
 
+    public static boolean isLogined(IoSession session){
+        return (session!=null)&&(getUserIdFromSession(session)!=-1);
+    }
+
     public static int nextUserId(LoginInfo loginInfo){
         return ++__id;
     }
@@ -40,6 +44,10 @@ public class UserProcessor {
         if(userName!=null){
             userNames.put(userId,userName);
         }
+    }
+
+    public IoSession getSession(int userId){
+        return userSessions.get(userId);
     }
 
     private static UserProcessor instance;
