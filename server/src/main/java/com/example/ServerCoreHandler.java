@@ -54,6 +54,7 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                                         (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,tryUserId);
                                 session.setAttribute
                                         (UserProcessor.LOGIN_NAME_IN_SESSION_ATTRIBUTE,loginInfo.getUsername());
+                                UserProcessor.getInstance().putUser(tryUserId,session,loginInfo.getUsername());
                                 serverEventListener.onUserLoginCallback(tryUserId,loginInfo.getUsername(),session);
                             }
                         }else{
@@ -66,6 +67,7 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                                         (UserProcessor.USER_ID_IN_SESSION_ATTRIBUTE,userId);
                                 session.setAttribute
                                         (UserProcessor.LOGIN_NAME_IN_SESSION_ATTRIBUTE,loginInfo.getUsername());
+                                UserProcessor.getInstance().putUser(userId,session,loginInfo.getUsername());
                                 serverEventListener.onUserLoginCallback(tryUserId,loginInfo.getUsername(),session);
                             }
                         }

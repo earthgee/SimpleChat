@@ -1,5 +1,9 @@
 package com.earthgee.simplechat.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +39,21 @@ public class ChatActivity extends AppCompatActivity{
 
     private String userId;
     private String mUserId;
+
+    private class ChatReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String from=intent.getStringExtra("from");
+            String content=intent.getStringExtra("content");
+            if(from.equals(userId)){
+                contents.add(userId+":"+content);
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    private ChatReceiver chatReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +135,22 @@ public class ChatActivity extends AppCompatActivity{
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(chatReceiver==null){
+            chatReceiver=new ChatReceiver();
+        }
+        registerReceiver(chatReceiver,new IntentFilter("com.earthgee.chat_text"));
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(chatReceiver);
+        super.onStop();
+    }
+
 
 
 }

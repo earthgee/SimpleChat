@@ -110,6 +110,15 @@ public class LocalUDPReceiver {
                         }else{
 
                         }
+                        break;
+                    case REQUEUST_CHAT_TEXT:
+                        //收到对方发来的消息
+                        Intent intent=new Intent("com.earthgee.chat_text");
+                        Bundle bundle=new Bundle();
+                        bundle.putString("from",pFromServer.getFrom()+"");
+                        bundle.putString("content",pFromServer.getContent());
+                        intent.putExtras(bundle);
+                        sendBroadCast(intent);
                 }
             }catch (Exception e){
 
