@@ -11,7 +11,10 @@ public enum ProtocolType {
     RESPONSE_LOGIN(1),
 
     //发送文字信息
-    REQUEUST_CHAT_TEXT(2);
+    REQUEUST_CHAT_TEXT(2),
+
+    //发送心跳包信息
+    REQUEST_KEEP_ALIVE(3);
 
     private int index;
 
@@ -20,7 +23,7 @@ public enum ProtocolType {
     }
 
     int getIndex(){
-         return index;
+        return index;
     }
 
 }

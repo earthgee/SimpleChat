@@ -74,6 +74,14 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                         break;
                     }
                     break;
+                case REQUEST_KEEP_ALIVE:
+                    //可能某些原因没有及时发心跳，这时服务端已认为掉线，发送重新登录的消息
+                    if(!UserProcessor.isLogined(session)){
+                        
+                    }else{
+
+                    }
+                    break;
                 case REQUEUST_CHAT_TEXT:
                     if(pFromClient.getTo()==0){
 

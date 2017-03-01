@@ -36,6 +36,10 @@ public class ProtocolFactory {
                 Integer.parseInt(toUserId));
     }
 
+    public static Protocol createKeepAlive(int fromUserId){
+        return new Protocol(ProtocolType.REQUEST_KEEP_ALIVE,"",fromUserId,0);
+    }
+
     private static String create(Object c){
         return new Gson().toJson(c);
     }

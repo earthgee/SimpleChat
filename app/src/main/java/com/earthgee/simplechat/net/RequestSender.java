@@ -45,6 +45,13 @@ public class RequestSender {
         return send(bytes,bytes.length);
     }
 
+    int sendKeepAlive(){
+        byte[] bytes=ProtocolFactory.createKeepAlive
+                (ConnectionManager.getInstance().getClientCore().getCurrentUserId())
+                .toBytes();
+        return send(bytes,bytes.length);
+    }
+
     private int send(byte[] fullProtocolBytes,int dataLen){
         if(!ConnectionManager.getInstance().isNetAvaiable()){
             return ErrorCode.LOCAL_NET_NO_CONNECTED;
@@ -68,7 +75,6 @@ public class RequestSender {
             sendSuccess=false;
         }
 
-        Log.d("earthgee","send Login Packet");
         return sendSuccess?ErrorCode.COMMON_CODE_OK:ErrorCode.SEND_PACKET_FAIL;
     }
 

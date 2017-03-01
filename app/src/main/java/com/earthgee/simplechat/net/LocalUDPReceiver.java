@@ -107,6 +107,7 @@ public class LocalUDPReceiver {
                             bundle.putInt("code",loginResponse.getCode());
                             intent.putExtras(bundle);
                             sendBroadCast(intent);
+                            KeepAliveSevice.startPollingService(context);
                         }else{
 
                         }
