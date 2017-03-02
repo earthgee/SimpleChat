@@ -117,9 +117,13 @@ public class LocalUDPReceiver {
                         Intent intent=new Intent("com.earthgee.chat_text");
                         Bundle bundle=new Bundle();
                         bundle.putString("from",pFromServer.getFrom()+"");
-                        bundle.putString("content",pFromServer.getContent());
+                        bundle.putString("content", pFromServer.getContent());
                         intent.putExtras(bundle);
                         sendBroadCast(intent);
+                        break;
+                    case RESPONSE_KEEP_ALIVE:
+                        KeepAliveSevice.updateKeepAliveResponseServerTimeStamp();
+                        break;
                 }
             }catch (Exception e){
 

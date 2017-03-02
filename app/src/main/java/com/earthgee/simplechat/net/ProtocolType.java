@@ -14,7 +14,15 @@ public enum ProtocolType {
     REQUEUST_CHAT_TEXT(2),
 
     //发送心跳包信息
-    REQUEST_KEEP_ALIVE(3);
+    REQUEST_KEEP_ALIVE(3),
+
+    //回复心跳包消息
+    RESPONSE_KEEP_ALIVE(4),
+
+    //错误
+    RESPONSE_ERROR(100)
+
+    ;
 
     private int index;
 

@@ -1,5 +1,6 @@
 package com.example.protocal;
 
+import com.example.protocal.entity.ErrorInfo;
 import com.example.protocal.entity.LoginInfo;
 import com.example.protocal.entity.LoginResponse;
 import com.google.gson.Gson;
@@ -37,6 +38,14 @@ public class ProtocolFactory {
     public static Protocol createLoginResponse(int code,int userId){
         return new Protocol(ProtocolType.RESPONSE_LOGIN,
                 create(new LoginResponse(code,userId)),0,userId);
+    }
+
+    public static Protocol createErrorResponse(int errorcode,int userId){
+        return new Protocol(ProtocolType.RESPONSE_ERROR,create(new ErrorInfo(errorcode)),0,userId);
+    }
+
+    public static Protocol createKeepAliveResponse(int userId){
+        return new Protocol(ProtocolType.RESPONSE_KEEP_ALIVE,"",0,userId);
     }
 
     private static String create(Object c){
