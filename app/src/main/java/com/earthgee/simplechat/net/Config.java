@@ -8,7 +8,7 @@ public class Config {
 
     //todo
     public static String appKey;
-    public static String serverIP="10.1.12.225";
+    public static String serverIP="192.168.1.111";
     public static String serverDomain;
     public static int serverUdpPort=7901;
     public static int localUdpPort=54321;

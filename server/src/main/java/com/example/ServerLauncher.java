@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
 public abstract class ServerLauncher {
 
     public static int PORT=7901;
-    public static int SESSION_RECYCLER_EXPIRE=1000*60;
+    public static int SESSION_RECYCLER_EXPIRE=121;
 
     protected ServerCoreHandler serverCoreHandler;
     private NioDatagramAcceptor acceptor;

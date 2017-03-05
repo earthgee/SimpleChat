@@ -75,6 +75,9 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                     }
                     break;
                 case REQUEST_KEEP_ALIVE:
+                    if(serverEventListener!=null){
+                        serverEventListener.onReceiveKeepAlive(pFromClient.getFrom());
+                    }
                     //可能某些原因没有及时发心跳，这时服务端已认为掉线，发送重新登录的消息
                     if(!UserProcessor.isLogined(session)){
                         sendData(session,ProtocolFactory.createErrorResponse(301,pFromClient.getFrom()));

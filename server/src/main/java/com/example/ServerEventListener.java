@@ -9,5 +9,6 @@ public interface ServerEventListener {
 
     void onUserLoginCallback(int userId,String userName,IoSession paramSession);
 
+    void onReceiveKeepAlive(int userId);
 
 }
