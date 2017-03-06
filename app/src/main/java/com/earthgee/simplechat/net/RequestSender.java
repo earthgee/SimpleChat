@@ -45,6 +45,10 @@ public class RequestSender {
         return send(bytes,bytes.length);
     }
 
+    public int sendReloginRequest(int lastUserId){
+        
+    }
+
     int sendKeepAlive(){
         byte[] bytes=ProtocolFactory.createKeepAlive
                 (ConnectionManager.getInstance().getClientCore().getCurrentUserId())

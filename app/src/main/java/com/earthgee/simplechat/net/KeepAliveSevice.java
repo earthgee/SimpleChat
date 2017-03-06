@@ -48,7 +48,7 @@ public class KeepAliveSevice extends IntentService{
         PendingIntent pendingIntent=PendingIntent.getService(context, 0, intent, 0);
         //PendingIntent pendingIntent=PendingIntent.getActivity(context,0,intent,0);
 
-        manager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), KEEP_ALIVE_INTERVAL, pendingIntent);
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), KEEP_ALIVE_INTERVAL, pendingIntent);
     }
 
     public static void stopPollingService(Context context){
