@@ -37,7 +37,7 @@ public class ProtocolFactory {
 
     public static Protocol createLoginResponse(int code,int userId){
         return new Protocol(ProtocolType.RESPONSE_LOGIN,
-                create(new LoginResponse(code,userId)),0,userId);
+                create(new LoginResponse(code,userId)),0,userId,true,null);
     }
 
     public static Protocol createErrorResponse(int errorcode,int userId){

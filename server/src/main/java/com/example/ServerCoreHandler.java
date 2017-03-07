@@ -116,7 +116,7 @@ public class ServerCoreHandler extends IoHandlerAdapter{
         return UserProcessor.nextUserId(loginInfo);
     }
 
-    static boolean sendData(IoSession session,Protocol p) throws Exception{
+    public static boolean sendData(IoSession session,Protocol p) throws Exception{
         if(session.isConnected()){
             if(p!=null){
                 byte[] res=p.toBytes();
@@ -125,8 +125,12 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                 future.awaitUninterruptibly(100L);
                 if(future.isWritten()){
                     if(p.getFrom()==0){
-                        return true;
+                        if(p.isQos()&&
+                                !Qos4SendDaemonS2C.getInstance().exist(p.getFp())){
+                            Qos4SendDaemonS2C.getInstance().put(p);
+                        }
                     }
+                    return true;
                 }
             }
         }else{
@@ -135,7 +139,7 @@ public class ServerCoreHandler extends IoHandlerAdapter{
         return false;
     }
 
-    static boolean sendData(Protocol p) throws Exception {
+    public static boolean sendData(Protocol p) throws Exception {
         if(p!=null){
             return sendData(UserProcessor.getInstance().getSession(p.getTo()),p);
         }

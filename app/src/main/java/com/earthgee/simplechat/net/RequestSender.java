@@ -46,7 +46,7 @@ public class RequestSender {
     }
 
     public int sendReloginRequest(int lastUserId){
-        
+        return -1;
     }
 
     int sendKeepAlive(){

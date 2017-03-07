@@ -30,6 +30,8 @@ public abstract class ServerLauncher {
         acceptor=initAcceptor();
         initSessionConfig(acceptor);
         acceptor.bind(new InetSocketAddress(PORT));
+        //qos
+        Qos4SendDaemonS2C.getInstance().startUp();
     }
 
     protected ServerCoreHandler initServerCoreHandler(){
