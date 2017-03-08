@@ -56,6 +56,11 @@ public class RequestSender {
         return send(bytes,bytes.length);
     }
 
+    private int sendDefaultData(Protocol protocol){
+        byte[] bytes=protocol.toBytes();
+        return send(bytes,bytes.length);
+    }
+
     private int send(byte[] fullProtocolBytes,int dataLen){
         if(!ConnectionManager.getInstance().isNetAvaiable()){
             return ErrorCode.LOCAL_NET_NO_CONNECTED;
@@ -115,6 +120,7 @@ public class RequestSender {
         private String userId;
         private String content;
         private Context context;
+        private Protocol protocol;
 
         public SendTask(String userId,String content,Context context){
             this.userId=userId;
@@ -122,10 +128,20 @@ public class RequestSender {
             this.context=context;
         }
 
+        public SendTask(Protocol p){
+            this.protocol=p;
+        }
+
         @Override
         protected Integer doInBackground(Object... params) {
-            int code=RequestSender.getInstance().
-                    sendChatReqeuest(userId, content);
+            int code=0;
+            if(protocol==null){
+                code=RequestSender.getInstance().
+                        sendChatReqeuest(userId, content);
+            }else{
+                code=RequestSender.getInstance().sendDefaultData(protocol);
+            }
+
             return code;
         }
 

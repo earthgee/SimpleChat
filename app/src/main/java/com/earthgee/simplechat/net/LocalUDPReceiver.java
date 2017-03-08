@@ -93,6 +93,18 @@ public class LocalUDPReceiver {
             try{
                 Protocol pFromServer=ProtocolFactory.parse(packet.getData(),packet.getLength());
 
+                if(pFromServer.isQos()){
+                    if(Qos4ReceiveDaemon.getInstance().hasReceived(pFromServer.getFp())){
+                        Qos4ReceiveDaemon.getInstance().addReceived(pFromServer);
+                        sendReceivedBack(pFromServer);
+
+                        return;
+                    }
+
+                    Qos4ReceiveDaemon.getInstance().addReceived(pFromServer);
+                    sendReceivedBack(pFromServer);
+                }
+
                 switch (pFromServer.getType()){
                     case RESPONSE_LOGIN:
                         LoginResponse loginResponse=ProtocolFactory.parseLoginResponse(pFromServer.getContent());
@@ -128,6 +140,15 @@ public class LocalUDPReceiver {
             }catch (Exception e){
 
             }
+        }
+
+        //发送qos回复包
+        private void sendReceivedBack(final Protocol pFromServer){
+            new RequestSender.SendTask(
+                    ProtocolFactory.createReceivedBack
+                            (pFromServer.getTo(),pFromServer.getFrom(),pFromServer.getFp())){
+
+            }.execute();
         }
     }
 

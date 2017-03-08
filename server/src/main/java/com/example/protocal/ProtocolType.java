@@ -19,6 +19,9 @@ public enum ProtocolType {
     //回复心跳包消息
     RESPONSE_KEEP_ALIVE(4),
 
+    //客户端回复qos
+    RESPONSE_QOS(5),
+
     //错误
     RESPONSE_ERROR(100)
 
@@ -35,3 +38,4 @@ public enum ProtocolType {
     }
 
 }
+

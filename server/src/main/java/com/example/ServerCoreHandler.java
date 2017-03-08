@@ -93,6 +93,10 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                         boolean sendOk=sendData(pFromClient);
                     }
                     break;
+                case RESPONSE_QOS:
+                    String fp=pFromClient.getFp();
+                    Qos4SendDaemonS2C.getInstance().remove(fp);
+                    break;
             }
         }
     }
