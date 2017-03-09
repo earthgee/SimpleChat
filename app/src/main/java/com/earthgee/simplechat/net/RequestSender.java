@@ -35,7 +35,7 @@ public class RequestSender {
 
     private int sendLoginRequestReal(String userName,String passWord){
         byte[] b=ProtocolFactory.createLoginProtocol(userName,passWord).toBytes();
-        int code=send(b,b.length);
+        int code=send(b, b.length);
         return code;
     }
 
@@ -56,9 +56,13 @@ public class RequestSender {
         return send(bytes,bytes.length);
     }
 
-    private int sendDefaultData(Protocol protocol){
+    public int sendDefaultData(Protocol protocol){
         byte[] bytes=protocol.toBytes();
-        return send(bytes,bytes.length);
+        int code=send(bytes,bytes.length);
+        if(protocol.isQos()&&!QosSendDaemon.getInstance().exist(protocol.getFp())){
+            QosSendDaemon.getInstance().put(protocol);
+        }
+        return code;
     }
 
     private int send(byte[] fullProtocolBytes,int dataLen){
@@ -126,6 +130,11 @@ public class RequestSender {
             this.userId=userId;
             this.content=content;
             this.context=context;
+        }
+
+        public SendTask(String toUserId,String content,boolean Qos){
+            this(ProtocolFactory.createChatProtocol(content,
+                    ConnectionManager.getInstance().getClientCore().getCurrentUserId(),toUserId));
         }
 
         public SendTask(Protocol p){

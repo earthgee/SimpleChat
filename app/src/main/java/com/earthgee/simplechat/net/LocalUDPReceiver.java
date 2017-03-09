@@ -120,6 +120,8 @@ public class LocalUDPReceiver {
                             intent.putExtras(bundle);
                             sendBroadCast(intent);
                             KeepAliveSevice.startPollingService(context);
+                            Qos4ReceiveDaemon.getInstance().startUp();
+                            QosSendDaemon.getInstance().startUp();
                         }else{
 
                         }

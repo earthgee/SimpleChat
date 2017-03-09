@@ -40,15 +40,20 @@ public class Qos4ReceiveDaemon {
         this.runnable=new Runnable() {
             @Override
             public void run() {
-                for(String key:receivedMessages.keySet()){
-                    long delta=System.currentTimeMillis()-receivedMessages.get(key);
-                    if(delta<MESSAGES_VALID_TIME){
-                        continue;
-                    }
-                    receivedMessages.remove(key);
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(String key:receivedMessages.keySet()){
+                            long delta=System.currentTimeMillis()-receivedMessages.get(key);
+                            if(delta<MESSAGES_VALID_TIME){
+                                continue;
+                            }
+                            receivedMessages.remove(key);
+                        }
 
-                handler.postDelayed(runnable,CHECK_INTERVAL);
+                        handler.postDelayed(runnable,CHECK_INTERVAL);
+                    }
+                }).start();
             }
         };
     }

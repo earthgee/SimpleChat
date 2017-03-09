@@ -91,10 +91,17 @@ public class ServerCoreHandler extends IoHandlerAdapter{
 
                     }else{
                         boolean sendOk=sendData(pFromClient);
+                        if(sendOk){
+                            break;
+                        }
+
+
+
                     }
                     break;
                 case RESPONSE_QOS:
-                    String fp=pFromClient.getFp();
+                    String fp=pFromClient.getContent();
+                    System.out.println("收到qos响应包:fp="+fp);
                     Qos4SendDaemonS2C.getInstance().remove(fp);
                     break;
             }
@@ -131,6 +138,7 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                     if(p.getFrom()==0){
                         if(p.isQos()&&
                                 !Qos4SendDaemonS2C.getInstance().exist(p.getFp())){
+                            System.out.println("等待qos响应包：fp="+p.getFp());
                             Qos4SendDaemonS2C.getInstance().put(p);
                         }
                     }

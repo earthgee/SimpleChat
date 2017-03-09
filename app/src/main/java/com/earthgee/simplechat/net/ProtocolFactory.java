@@ -33,7 +33,7 @@ public class ProtocolFactory {
 
     public static Protocol createChatProtocol(String content,int fromUserId,String toUserId){
         return new Protocol(ProtocolType.REQUEUST_CHAT_TEXT,content,fromUserId,
-                Integer.parseInt(toUserId));
+                Integer.parseInt(toUserId),true,null);
     }
 
     public static Protocol createKeepAlive(int fromUserId){
