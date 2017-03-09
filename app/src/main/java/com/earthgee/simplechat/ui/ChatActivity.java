@@ -79,7 +79,7 @@ public class ChatActivity extends AppCompatActivity{
                 final String content=inputText.getText().toString();
                 if(content!=null&&content.length()>0){
                     new RequestSender.SendTask
-                            (userId,content,ChatActivity.this){
+                            (userId,content,true){
 
                         @Override
                         protected void onPostExecute(Integer integer) {

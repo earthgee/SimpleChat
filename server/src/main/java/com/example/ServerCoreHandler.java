@@ -95,14 +95,23 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                             break;
                         }
 
-
+                        if(pFromClient.isQos()){
+                            //暂时发送虚伪应答包
+                            sendData(session,ProtocolFactory.createReceivedBack(pFromClient.getTo(),
+                                    pFromClient.getFrom(),pFromClient.getFp()));
+                        }
 
                     }
                     break;
                 case RESPONSE_QOS:
-                    String fp=pFromClient.getContent();
-                    System.out.println("收到qos响应包:fp="+fp);
-                    Qos4SendDaemonS2C.getInstance().remove(fp);
+                    if(pFromClient.getTo()==0){
+                        String fp=pFromClient.getContent();
+                        System.out.println("收到qos响应包:fp="+fp);
+                        Qos4SendDaemonS2C.getInstance().remove(fp);
+                        break;
+                    }
+
+                    sendData(pFromClient);
                     break;
             }
         }

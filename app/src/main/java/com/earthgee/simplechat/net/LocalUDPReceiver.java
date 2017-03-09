@@ -138,6 +138,10 @@ public class LocalUDPReceiver {
                     case RESPONSE_KEEP_ALIVE:
                         KeepAliveSevice.updateKeepAliveResponseServerTimeStamp();
                         break;
+                    case RESPONSE_QOS:
+                        String fp=pFromServer.getContent();
+                        QosSendDaemon.getInstance().remove(fp);
+                        break;
                 }
             }catch (Exception e){
 

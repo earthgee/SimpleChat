@@ -48,6 +48,11 @@ public class ProtocolFactory {
         return new Protocol(ProtocolType.RESPONSE_KEEP_ALIVE,"",0,userId);
     }
 
+    //qos回复包
+    public static Protocol createReceivedBack(int fromUserId,int toUserId,String message){
+        return new Protocol(ProtocolType.RESPONSE_QOS,message/*这里是包的指纹*/,fromUserId,toUserId);
+    }
+
     private static String create(Object c){
         return new Gson().toJson(c);
     }
