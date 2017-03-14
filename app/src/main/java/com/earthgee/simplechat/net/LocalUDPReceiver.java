@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.earthgee.simplechat.net.entity.ErrorInfo;
 import com.earthgee.simplechat.net.entity.LoginResponse;
 
 import java.io.IOException;
@@ -62,8 +63,6 @@ public class LocalUDPReceiver {
             thread.interrupt();
             thread=null;
         }
-
-
     }
 
     private void p2pListeningImpl() throws IOException {
@@ -122,6 +121,7 @@ public class LocalUDPReceiver {
                             KeepAliveSevice.startPollingService(context);
                             Qos4ReceiveDaemon.getInstance().startUp();
                             QosSendDaemon.getInstance().startUp();
+                            AutoReloginDameon.getInstance(context).stop();
                         }else{
 
                         }
@@ -141,6 +141,14 @@ public class LocalUDPReceiver {
                     case RESPONSE_QOS:
                         String fp=pFromServer.getContent();
                         QosSendDaemon.getInstance().remove(fp);
+                        break;
+                    case RESPONSE_ERROR:
+                        ErrorInfo errorInfo=ProtocolFactory.parseErrorInfo(pFromServer.getContent());
+
+                        if(errorInfo.getErrorcode()==301){
+                            KeepAliveSevice.stopPollingService(context);
+                            AutoReloginDameon.getInstance().start();
+                        }
                         break;
                 }
             }catch (Exception e){

@@ -1,6 +1,7 @@
 package com.earthgee.simplechat.ui;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.earthgee.simplechat.net.ConnectionManager;
 

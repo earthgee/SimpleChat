@@ -14,6 +14,9 @@ public class ConnectionManager {
     private ClientCore clientCore;
     private LocalUDPProvider localUDPProvider;
 
+    private String userName;
+    private String password;
+
     private static ConnectionManager instance;
 
     private ConnectionManager(Context context){
@@ -46,5 +49,21 @@ public class ConnectionManager {
 
     public ClientCore getClientCore() {
         return clientCore;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

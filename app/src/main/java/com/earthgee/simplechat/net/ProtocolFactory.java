@@ -1,5 +1,6 @@
 package com.earthgee.simplechat.net;
 
+import com.earthgee.simplechat.net.entity.ErrorInfo;
 import com.earthgee.simplechat.net.entity.LoginInfo;
 import com.earthgee.simplechat.net.entity.LoginResponse;
 import com.earthgee.simplechat.util.CharsetUtil;
@@ -12,7 +13,7 @@ import com.google.gson.Gson;
 public class ProtocolFactory {
 
     public static Protocol parse(byte[] fullProtocolBytes,int len){
-        return parse(fullProtocolBytes,len,Protocol.class);
+        return parse(fullProtocolBytes, len, Protocol.class);
     }
 
     public static Protocol parse(byte[] fullProtocolBytes,int len,Class<Protocol> protocolClass){
@@ -20,11 +21,15 @@ public class ProtocolFactory {
     }
 
     public static <T> T parse(String ProtocolString,Class<T> protocolClass){
-        return new Gson().fromJson(ProtocolString,protocolClass);
+        return new Gson().fromJson(ProtocolString, protocolClass);
     }
 
     public static LoginResponse parseLoginResponse(String content){
         return parse(content, LoginResponse.class);
+    }
+
+    public static ErrorInfo parseErrorInfo(String content){
+        return parse(content,ErrorInfo.class);
     }
 
     public static Protocol createLoginProtocol(String username,String password){

@@ -38,6 +38,9 @@ public class KeepAliveSevice extends IntentService{
                 System.currentTimeMillis()-lastResponseKeepAliveTime>=NETWORK_CONNECTION_TIME_OUT){
             //服务端挂了?
             stopPollingService(getBaseContext());
+            QosSendDaemon.getInstance().stop();
+            Qos4ReceiveDaemon.getInstance().stop();
+            AutoReloginDameon.getInstance().start();
         }
 
     }

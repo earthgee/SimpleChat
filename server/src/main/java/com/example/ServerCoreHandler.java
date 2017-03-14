@@ -87,6 +87,10 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                     }
                     break;
                 case REQUEUST_CHAT_TEXT:
+                    if(!UserProcessor.isLogined(session)){
+                        sendData(session,ProtocolFactory.createErrorResponse(301,pFromClient.getFrom()));
+                    }
+
                     if(pFromClient.getTo()==0){
 
                     }else{
@@ -104,6 +108,10 @@ public class ServerCoreHandler extends IoHandlerAdapter{
                     }
                     break;
                 case RESPONSE_QOS:
+                    if(!UserProcessor.isLogined(session)){
+                        sendData(session,ProtocolFactory.createErrorResponse(301,pFromClient.getFrom()));
+                    }
+
                     if(pFromClient.getTo()==0){
                         String fp=pFromClient.getContent();
                         System.out.println("收到qos响应包:fp="+fp);

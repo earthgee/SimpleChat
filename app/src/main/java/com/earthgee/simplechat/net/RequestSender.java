@@ -35,6 +35,8 @@ public class RequestSender {
 
     private int sendLoginRequestReal(String userName,String passWord){
         byte[] b=ProtocolFactory.createLoginProtocol(userName,passWord).toBytes();
+        ConnectionManager.getInstance().setUserName(userName);
+        ConnectionManager.getInstance().setPassword(passWord);
         int code=send(b, b.length);
         return code;
     }
