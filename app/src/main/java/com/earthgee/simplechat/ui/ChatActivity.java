@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.earthgee.simplechat.R;
 import com.earthgee.simplechat.net.ConnectionManager;
 import com.earthgee.simplechat.net.RequestSender;
+import com.earthgee.simplechat.net.entity.ChatEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ChatActivity extends AppCompatActivity{
     private EditText inputText;
     private Button sendBtn;
 
-    private List<String> contents=new ArrayList<>();
+    private List<ChatEntity> contents=new ArrayList<>();
     private ChatAdapter mAdapter;
 
     private String userId;
@@ -47,7 +48,7 @@ public class ChatActivity extends AppCompatActivity{
             String from=intent.getStringExtra("from");
             String content=intent.getStringExtra("content");
             if(from.equals(userId)){
-                contents.add(userId+":"+content);
+                //contents.add(userId+":"+content);
                 mAdapter.notifyDataSetChanged();
             }
         }
@@ -85,7 +86,7 @@ public class ChatActivity extends AppCompatActivity{
                         protected void onPostExecute(Integer integer) {
                             if(integer==0){
                                 //发送成功
-                                contents.add(mUserId+":"+content);
+                                //contents.add(mUserId+":"+content);
                                 mAdapter.notifyDataSetChanged();
                             }else{
                                 Toast.makeText(ChatActivity.this,"发送失败",Toast.LENGTH_SHORT).show();;
@@ -107,6 +108,11 @@ public class ChatActivity extends AppCompatActivity{
 
         @Override
         public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if(viewType==0){
+
+            }else if(viewType==1){
+
+            }
             View contentView=LayoutInflater.from(ChatActivity.this).
                     inflate(R.layout.item_chat, parent, false);
             ViewHolder viewHolder=new ViewHolder
@@ -116,12 +122,23 @@ public class ChatActivity extends AppCompatActivity{
 
         @Override
         public void onBindViewHolder(ChatAdapter.ViewHolder holder, int position) {
-            holder.content.setText(contents.get(position));
+            //holder.content.setText(contents.get(position));
         }
 
         @Override
         public int getItemCount() {
             return contents.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if(contents.get(position).getFrom()==ChatEntity.FROM_ME){
+                return 0;
+            }else if(contents.get(position).getFrom()==ChatEntity.FROM_OTHER){
+                return 1;
+            }
+
+            return -1;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
