@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity{
             String from=intent.getStringExtra("from");
             String content=intent.getStringExtra("content");
             if(from.equals(userId)){
-                //contents.add(userId+":"+content);
+                contents.add(new ChatEntity(ChatEntity.TYPE_TEXT,ChatEntity.FROM_OTHER,content));
                 mAdapter.notifyDataSetChanged();
             }
         }
@@ -86,7 +86,7 @@ public class ChatActivity extends AppCompatActivity{
                         protected void onPostExecute(Integer integer) {
                             if(integer==0){
                                 //发送成功
-                                //contents.add(mUserId+":"+content);
+                                contents.add(new ChatEntity(ChatEntity.TYPE_TEXT,ChatEntity.FROM_ME,content));
                                 mAdapter.notifyDataSetChanged();
                             }else{
                                 Toast.makeText(ChatActivity.this,"发送失败",Toast.LENGTH_SHORT).show();;
@@ -104,25 +104,39 @@ public class ChatActivity extends AppCompatActivity{
         recyclerView.setAdapter(mAdapter=new ChatAdapter());
     }
 
-    private class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>{
+    private class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         @Override
-        public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            RecyclerView.ViewHolder viewHolder=null;
+
             if(viewType==0){
-
+                View contentView=LayoutInflater.from(ChatActivity.this).
+                        inflate(R.layout.item_chat_1, parent, false);
+                viewHolder=new FromMeViewHolder(contentView);
             }else if(viewType==1){
-
+                View contentView=LayoutInflater.from(ChatActivity.this).
+                        inflate(R.layout.item_chat_2, parent, false);
+                viewHolder=new FromOtherViewHolder(contentView);
+            }else{
+                View contentView=LayoutInflater.from(ChatActivity.this).
+                        inflate(R.layout.item_chat, parent, false);
+                viewHolder=new ViewHolder
+                        (contentView);
             }
-            View contentView=LayoutInflater.from(ChatActivity.this).
-                    inflate(R.layout.item_chat, parent, false);
-            ViewHolder viewHolder=new ViewHolder
-                    (contentView);
+
             return viewHolder;
         }
 
         @Override
-        public void onBindViewHolder(ChatAdapter.ViewHolder holder, int position) {
-            //holder.content.setText(contents.get(position));
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if(holder instanceof FromMeViewHolder){
+                ((FromMeViewHolder)holder).getContent().setText(contents.get(position).getContent());
+            }else if(holder instanceof FromOtherViewHolder){
+                ((FromOtherViewHolder)holder).getContent().setText(contents.get(position).getContent());
+            }else{
+
+            }
         }
 
         @Override
@@ -148,6 +162,34 @@ public class ChatActivity extends AppCompatActivity{
             public ViewHolder(View itemView) {
                 super(itemView);
                 content= (TextView) itemView.findViewById(R.id.content);
+            }
+        }
+
+        class FromMeViewHolder extends RecyclerView.ViewHolder{
+
+            private TextView content;
+
+            public FromMeViewHolder(View itemView) {
+                super(itemView);
+                content= (TextView) itemView.findViewById(R.id.text);
+            }
+
+            public TextView getContent() {
+                return content;
+            }
+        }
+
+        class FromOtherViewHolder extends RecyclerView.ViewHolder{
+
+            private TextView content;
+
+            public FromOtherViewHolder(View itemView) {
+                super(itemView);
+                content= (TextView) itemView.findViewById(R.id.text);
+            }
+
+            public TextView getContent() {
+                return content;
             }
         }
 
