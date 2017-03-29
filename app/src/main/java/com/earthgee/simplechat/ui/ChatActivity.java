@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -91,6 +92,7 @@ public class ChatActivity extends AppCompatActivity{
                             }else{
                                 Toast.makeText(ChatActivity.this,"发送失败",Toast.LENGTH_SHORT).show();;
                             }
+                            hideKeyBoard();
                         }
 
                     }.execute();
@@ -210,6 +212,9 @@ public class ChatActivity extends AppCompatActivity{
         super.onStop();
     }
 
-
+    private void hideKeyBoard(){
+        InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),0);
+    }
 
 }
