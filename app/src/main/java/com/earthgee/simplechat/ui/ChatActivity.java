@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -51,6 +53,7 @@ public class ChatActivity extends AppCompatActivity{
             if(from.equals(userId)){
                 contents.add(new ChatEntity(ChatEntity.TYPE_TEXT,ChatEntity.FROM_OTHER,content));
                 mAdapter.notifyDataSetChanged();
+                recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
             }
         }
     }
@@ -89,6 +92,7 @@ public class ChatActivity extends AppCompatActivity{
                                 //发送成功
                                 contents.add(new ChatEntity(ChatEntity.TYPE_TEXT,ChatEntity.FROM_ME,content));
                                 mAdapter.notifyDataSetChanged();
+                                recyclerView.scrollToPosition(mAdapter.getItemCount()-1);
                             }else{
                                 Toast.makeText(ChatActivity.this,"发送失败",Toast.LENGTH_SHORT).show();;
                             }
@@ -214,7 +218,37 @@ public class ChatActivity extends AppCompatActivity{
 
     private void hideKeyBoard(){
         InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),0);
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction()== MotionEvent.ACTION_DOWN){
+            View v =getCurrentFocus();
+            if(isShouldHideInput(v,ev)){
+                hideKeyBoard();
+            }
+        }
+
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public boolean isShouldHideInput(View v,MotionEvent event){
+        if(v!=null&&(v instanceof EditText)){
+            int[] location=new int[2];
+            v.getLocationInWindow(location);
+            int left=location[0];
+            int top=location[1];
+            int bottom=top+v.getHeight();
+            int right=left+v.getWidth();
+            if(event.getX()> left&&event.getX()<right&&
+                    event.getY()>top&&event.getY()<bottom){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return true;
     }
 
 }
